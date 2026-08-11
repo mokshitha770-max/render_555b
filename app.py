@@ -1,4 +1,4 @@
-t requests
+import requests
 import streamlit as st
 
 # Configure Page
