@@ -17,9 +17,9 @@ class student(BaseModel):
     course: str
 
 
-==========================================
+#==========================================
 #1.READ (GET) - View All or Filter by Course
-==========================================
+#==========================================
 @app.get("/students/")
 def get_students(course: str = None):
     if course:
