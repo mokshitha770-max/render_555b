@@ -1,25 +1,28 @@
- from fastapi import fastAPI
-from pydantic import Basemodel
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-app = fastAPI(title="student details management API")
+app = FastAPI(title="Student Details Management API")
 
-# 1.in memory Database
+# 1. In-Memory Database
 students_db = {
-    1: {"name":"mokshitha","age":21,"course":"Data analytics"},
-    2: {"name":"hemalatha","age":20,"course":"Data science"},
-    3: {"name":"uma","age":21,"course":"AI & ML"},
+    1: {"name": "Aarav", "age": 21, "course": "Data Science"},
+    2: {"name": "Priya", "age": 22, "course": "Web Development"},
+    3: {"name": "Rohan", "age": 20, "course": "AI & ML"},
 }
 
-#2.data visualization model
-class student(BaseModel):
+
+# 2. Data Validation Model
+class Student(BaseModel):
     name: str
     age: int
     course: str
 
 
-#==========================================
-#1.READ (GET) - View All or Filter by Course
-#==========================================
+# ==========================================
+# 1. READ (GET) - View All or Filter by Course
+# ==========================================
+
+
 @app.get("/students/")
 def get_students(course: str = None):
     if course:
@@ -31,6 +34,15 @@ def get_students(course: str = None):
         return filtered
 
     return students_db
+
+
+# READ SINGLE STUDENT BY ID
+@app.get("/students/{student_id}")
+def get_student(student_id: int):
+    if student_id not in students_db:
+        return {"error": "Student not found"}
+    return students_db[student_id]
+
 
 # ==========================================
 # 2. CREATE (POST) - Add New Student
@@ -77,5 +89,3 @@ def delete_student(student_id: int):
 
     deleted = students_db.pop(student_id)
     return {"message": "Student deleted successfully", "deleted_data": deleted}
-
-    
